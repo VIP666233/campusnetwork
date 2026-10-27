@@ -1,0 +1,16 @@
+dist/
+.build/
+.vs/
+bin/
+obj/
+node_modules/
+*.exe
+*.dll
+*.pdb
+*.zip
+*.user
+tests/*-results.txt
+settings.json
+settings.json.new
+last-run.log
+Sessions/

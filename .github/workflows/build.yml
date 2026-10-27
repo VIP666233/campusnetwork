@@ -1,0 +1,33 @@
+name: Windows build and tests
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Portal regression
+        run: node tests/portal-navigation.test.cjs
+      - name: Website verification and notifications
+        shell: powershell
+        run: ./tests/run-connectivity-tests.ps1
+      - name: Browser protocol and transport
+        shell: powershell
+        run: ./tests/run-protocol-tests.ps1
+      - name: Login flow
+        shell: powershell
+        run: ./tests/run-flow-tests.ps1
+      - name: Build v1.9.1
+        shell: powershell
+        run: ./build.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CampusNetLoginHelper-v1.9.1-site-notice
+          path: dist/*

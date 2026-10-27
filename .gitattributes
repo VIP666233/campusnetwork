@@ -1,0 +1,2 @@
+# Preserve recovered source bytes and SOURCE_FILES.sha256 across platforms.
+* -text
