@@ -79,6 +79,49 @@
 - 支持隐藏到 Windows 通知区域。
 - 支持自定义验证地址。
 
+## 🧩 代码与项目属性
+
+| 属性 | 说明 |
+| --- | --- |
+| 源码版本 | v1.9.1「验证网址弹窗」版 |
+| 开发语言 | C#（兼容 C# 5）+ JavaScript |
+| 界面框架 | Windows Forms（WinForms） |
+| 运行环境 | Windows 10 / 11、.NET Framework 4.8 |
+| 浏览器依赖 | Microsoft Edge 或 Google Chrome |
+| 自动化方式 | 通过浏览器 DevTools 协议识别并填写认证页面 |
+| 密码保存 | Windows DPAPI 加密，与当前 Windows 用户绑定 |
+| 构建方式 | PowerShell 脚本，无需 NuGet 依赖 |
+| 开源许可证 | [MIT](LICENSE)，允许使用、修改和分发，需保留版权及许可证声明 |
+
+该版本源码从作者提供的 EXE 恢复，具体来源及验证记录见 [源码恢复说明](SOURCE_PROVENANCE.md)。此仓库对应上述历史版本，不包含后续休眠唤醒重连和华电专用版的改动。
+
+### 📁 源码结构
+
+| 文件 / 目录 | 作用 |
+| --- | --- |
+| `src/MainForm.cs` | 主界面、设置与托盘操作 |
+| `src/Portal.js` | 认证页面识别、运营商选择及账号密码填写 |
+| `src/LoginService.cs` | 登录流程、页面跳转与超时处理 |
+| `src/BrowserSession.cs` | 浏览器启动与自动化控制 |
+| `src/ConnectivityCheck.cs` | 验证网站访问结果 |
+| `src/LoginNotification.cs` | 右下角弹窗及动画 |
+| `src/Settings.cs` | 设置存储、密码加密与开机启动配置 |
+| `src/assets/` | 软件图标和 Logo |
+| `tests/` | 登录、网页验证及浏览器通信测试 |
+| `build.ps1` | 编译脚本 |
+
+### 🔧 自行编译
+
+下载源码并解压，在项目根目录打开 Windows PowerShell，执行：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
+```
+
+编译结果位于 `dist` 文件夹。运行时将 `校园网自动登录.exe` 与同名 `.exe.config` 文件放在一起。
+
+仓库已配置 [GitHub Actions](https://github.com/VIP666233/campusnetwork/actions)，提交更新后会自动执行编译与回归测试。
+
 ---
 
 由 **VIP666233** 制作
