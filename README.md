@@ -28,18 +28,6 @@
 
 > **更新旧版：** 先右键通知区域里的软件图标，选择“退出”，再解压运行新版。换了软件存放位置后，重新保存设置，以更新开机启动路径。
 
-## 🆕 v1.10.0 最近更新
-
-| 更新 | 使用时的变化 |
-| --- | --- |
-| 三套页面规则合并 | 通用表单、华电区域表单、图片登录按钮表单合到一个软件，按页面特征自动匹配，不用手动选学校。 |
-| 更快关闭认证网页 | 提交后的结果检查间隔从 1.5 秒缩短至 0.2 秒；确认成功后关闭网页，再继续网站验证。实际耗时取决于网页响应。 |
-| 高级设置简化 | 移除一排手动适配输入框，保持自动识别；遇到问题可通过“点击检测”保存报告。 |
-| 项目链接与交流群 | 高级设置可打开、复制 GitHub 和 Bilibili 链接，点击 QQ 群号即可复制。 |
-| 标题与说明统一 | 软件标题只显示软件名和版本号；软件包、源码包都附带从零开始教程。 |
-
-目前的适配针对上述已知页面，并非所有学校都已支持。华电的空白区域处理需要学校标识与表单特征同时匹配，不会直接套用到其他学校。
-
 ## ✨ 主要功能
 
 | 功能 | 说明 |
@@ -127,7 +115,7 @@
 
 1. 打开“高级设置”，点击 **“点击检测”**。
 2. 等认证页加载完整；如果有运营商下拉菜单，可以展开后点击“重新检测”。
-3. 保存检测报告，通过 [GitHub Issues](https://github.com/VIP666233/campusnetwork/issues) 或 QQ 交流群 `1131310647` 反馈。
+3. 保存检测报告，**只通过 QQ 交流群 `1131310647` 反馈问题**。
 
 检测只读取页面结构，不填写账号密码、不点击登录；报告不采集输入框内容、Cookie、浏览器存储或网址查询参数。附截图时请隐藏自己的账号等个人信息。
 
@@ -196,7 +184,23 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 - ⭐ **[GitHub 项目](https://github.com/VIP666233/campusnetwork)**：点个 Star，也欢迎分享给需要的同学。
 - 🪙 **[Bilibili 视频](https://www.bilibili.com/video/BV1tbnq66EeL/)**：欢迎投币、点赞支持。
-- 💬 **QQ 交流群：`1131310647`**：交流使用问题、反馈学校页面兼容情况。
+- 💬 **QQ 交流群：`1131310647`**：问题反馈的唯一渠道，也欢迎交流使用心得。
+
+## ⭐ Star History
+
+如果这个工具帮到了你，欢迎点亮一颗 Star，让更多同学发现它。
+
+[![VIP666233/campusnetwork Star History](https://api.star-history.com/svg?repos=VIP666233/campusnetwork&type=Date)](https://www.star-history.com/?repos=VIP666233%2Fcampusnetwork&type=date&legend=top-left)
+
+图表由 [Star History](https://www.star-history.com/) 生成，展示本仓库的 Star 变化。
+
+## ❤️ 感谢贡献者
+
+感谢每一位提交代码、完善文档和帮助项目成长的朋友。
+
+[![campusnetwork 贡献者](https://contrib.rocks/image?repo=VIP666233/campusnetwork)](https://github.com/VIP666233/campusnetwork/graphs/contributors)
+
+头像由 [contrib.rocks](https://contrib.rocks/) 根据 GitHub 贡献记录生成，点击可查看完整列表。
 
 ---
 
