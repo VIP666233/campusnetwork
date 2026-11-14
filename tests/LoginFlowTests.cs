@@ -45,6 +45,11 @@ namespace CampusNet {
             var results=new List<string>();
             var cfg=new Settings { Url="http://9.9.9.9.com/",Username="local-test-user" };
             BrowserSession.RedirectAfterSubmit=false; BrowserSession.FailPassword=false;
+            var fastCfg=new Settings { Url="http://10.2.5.251/a79.htm",Username="local-test-user" };
+            var elapsed=System.Diagnostics.Stopwatch.StartNew();
+            var quick=LoginService.RunAsync(fastCfg,false,new Progress(),CancellationToken.None).GetAwaiter().GetResult();
+            elapsed.Stop();
+            Check(quick.Confirmed && BrowserSession.Submissions==1 && BrowserSession.Closes==1 && elapsed.ElapsedMilliseconds<1200,"Confirmed login closes promptly without repeating submission ("+elapsed.ElapsedMilliseconds+" ms)",results);
             var r=LoginService.RunAsync(cfg,false,new Progress(),CancellationToken.None).GetAwaiter().GetResult();
             Check(r.Confirmed&&r.Submitted&&BrowserSession.Submissions==1,"One call discovers campus origin and completes login",results);
             Check(BrowserSession.Starts==1&&BrowserSession.Closes==1,"Discovery reuses and closes one browser session",results);

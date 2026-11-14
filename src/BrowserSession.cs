@@ -283,7 +283,20 @@ namespace CampusNet
 				dictionary3.Add("message", "等待认证页加载…");
 				return dictionary3;
 			}
-			return (Dictionary<string, object>)remote["value"];
+			var value = (Dictionary<string, object>)remote["value"];
+			if (value.ContainsKey("activateSelect"))
+			{
+				var point = (Dictionary<string, object>)value["activateSelect"];
+				await BrowserProtocol.ActivateSelectAsync(Convert.ToDouble(point["x"]), Convert.ToDouble(point["y"]), CommandAsync, token);
+				value.Remove("activateSelect");
+			}
+			if (value.ContainsKey("clickControl"))
+			{
+				var point = (Dictionary<string, object>)value["clickControl"];
+				await BrowserProtocol.ClickControlAsync(Convert.ToDouble(point["x"]), Convert.ToDouble(point["y"]), CommandAsync, token);
+				value.Remove("clickControl");
+			}
+			return value;
 		}
 
 		public async Task CloseAsync()

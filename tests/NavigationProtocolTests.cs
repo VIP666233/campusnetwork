@@ -52,6 +52,32 @@ namespace CampusNet {
             Check(Fails(() => BrowserProtocol.NavigateAsync(url, (m,p,t) => Task.FromResult(new Dictionary<string, object>()), CancellationToken.None).GetAwaiter().GetResult(), "浏览器未确认"), "Do not claim an unacknowledged navigation succeeded");
             var download = new Dictionary<string, object> { { "frameId", "frame" }, { "isDownload", true } };
             Check(Fails(() => BrowserProtocol.NavigateAsync(url, (m,p,t) => Task.FromResult(download), CancellationToken.None).GetAwaiter().GetResult(), "文件下载"), "Reject a download instead of treating it as a login page");
+            var inputEvents = new List<string>();
+            Func<string, object, CancellationToken, Task<Dictionary<string, object>>> inputMock = (method, parameters, token) => {
+                var type = (string)parameters.GetType().GetProperty("type").GetValue(parameters, null);
+                inputEvents.Add(method + ":" + type);
+                var key = parameters.GetType().GetProperty("key");
+                if (key != null) Check((string)key.GetValue(parameters, null) == "Escape", "Dropdown dismissal never selects with Enter or arrows");
+                return Task.FromResult(new Dictionary<string, object>());
+            };
+            BrowserProtocol.ActivateSelectAsync(30, 50, inputMock, CancellationToken.None).GetAwaiter().GetResult();
+            Check(String.Join(",", inputEvents) == "Input.dispatchMouseEvent:mouseMoved,Input.dispatchMouseEvent:mousePressed,Input.dispatchMouseEvent:mouseReleased,Input.dispatchKeyEvent:keyDown,Input.dispatchKeyEvent:keyUp", "Open and dismiss dropdown in the correct order");
+            inputEvents.Clear();
+            Check(Fails(() => BrowserProtocol.ActivateSelectAsync(Double.NaN, 50, inputMock, CancellationToken.None).GetAwaiter().GetResult(), "位置无效"), "Invalid coordinates cannot click another control");
+            Check(inputEvents.Count == 0, "Invalid activation sends no input");
+            bool canceled = false;
+            try { BrowserProtocol.ActivateSelectAsync(30, 50, inputMock, new CancellationToken(true)).GetAwaiter().GetResult(); }
+            catch (OperationCanceledException) { canceled = true; }
+            Check(canceled && inputEvents.Count == 0, "Canceled login sends no dropdown input");
+            inputEvents.Clear();
+            BrowserProtocol.ClickControlAsync(30, 50, inputMock, CancellationToken.None).GetAwaiter().GetResult();
+            Check(String.Join(",", inputEvents) == "Input.dispatchMouseEvent:mouseMoved,Input.dispatchMouseEvent:mousePressed,Input.dispatchMouseEvent:mouseReleased", "Custom controls receive one mouse click without dismissing their menu");
+            inputEvents.Clear();
+            Check(Fails(() => BrowserProtocol.ClickControlAsync(Double.PositiveInfinity, 50, inputMock, CancellationToken.None).GetAwaiter().GetResult(), "位置无效"), "Custom clicks reject invalid coordinates");
+            canceled = false;
+            try { BrowserProtocol.ClickControlAsync(30, 50, inputMock, new CancellationToken(true)).GetAwaiter().GetResult(); }
+            catch (OperationCanceledException) { canceled = true; }
+            Check(canceled && inputEvents.Count == 0, "Canceled custom control clicks send no input");
             Results.Add("ALL " + Results.Count + " PROTOCOL TESTS PASSED");
             return Results.ToArray();
         }

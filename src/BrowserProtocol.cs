@@ -110,6 +110,29 @@ namespace CampusNet
 			}
 		}
 
+		public static async Task ClickControlAsync(double x, double y, Func<string, object, CancellationToken, Task<Dictionary<string, object>>> command, CancellationToken token)
+		{
+			if (Double.IsNaN(x) || Double.IsInfinity(x) || Double.IsNaN(y) || Double.IsInfinity(y) || x < 0 || y < 0)
+				throw new InvalidOperationException("自定义控件位置无效，请重新打开认证页。");
+			token.ThrowIfCancellationRequested();
+			await command("Input.dispatchMouseEvent", new { type = "mouseMoved", x, y }, token);
+			await command("Input.dispatchMouseEvent", new { type = "mousePressed", x, y, button = "left", clickCount = 1 }, token);
+			await command("Input.dispatchMouseEvent", new { type = "mouseReleased", x, y, button = "left", clickCount = 1 }, token);
+		}
+
+		public static async Task ActivateSelectAsync(double x, double y, Func<string, object, CancellationToken, Task<Dictionary<string, object>>> command, CancellationToken token)
+		{
+			if (Double.IsNaN(x) || Double.IsInfinity(x) || Double.IsNaN(y) || Double.IsInfinity(y) || x < 0 || y < 0)
+				throw new InvalidOperationException("区域/运营商控件位置无效，请重新打开认证页。");
+			token.ThrowIfCancellationRequested();
+			await command("Input.dispatchMouseEvent", new { type = "mouseMoved", x, y }, token);
+			await command("Input.dispatchMouseEvent", new { type = "mousePressed", x, y, button = "left", clickCount = 1 }, token);
+			await command("Input.dispatchMouseEvent", new { type = "mouseReleased", x, y, button = "left", clickCount = 1 }, token);
+			// Dismiss the native popup without choosing its first/default option.
+			await command("Input.dispatchKeyEvent", new { type = "keyDown", key = "Escape", code = "Escape", windowsVirtualKeyCode = 27 }, token);
+			await command("Input.dispatchKeyEvent", new { type = "keyUp", key = "Escape", code = "Escape", windowsVirtualKeyCode = 27 }, token);
+		}
+
 		public static bool NeedsBlankRecovery(string currentUrl, TimeSpan elapsed)
 		{
 			if (currentUrl == "about:blank")

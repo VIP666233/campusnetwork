@@ -75,12 +75,30 @@ namespace CampusNet
 					progress.Report("正在启动登录浏览器…");
 					await session.StartAsync(cfg.Url, showBrowser, token, progress);
 					DateTime deadline = DateTime.UtcNow.AddSeconds(40.0);
+					string script = null, scriptUrl = null;
+					bool scriptVerify = false;
+					string previousAdapter = null;
 					while (DateTime.UtcNow < deadline)
 					{
 						token.ThrowIfCancellationRequested();
-						Dictionary<string, object> state = await session.EvaluateAsync(BuildScript(cfg, password, submitted, redirect.CurrentUrl), token);
+						if (script == null || scriptUrl != redirect.CurrentUrl || scriptVerify != submitted)
+						{
+							script = BuildScript(cfg, password, submitted, redirect.CurrentUrl);
+							scriptUrl = redirect.CurrentUrl;
+							scriptVerify = submitted;
+						}
+						Dictionary<string, object> state = await session.EvaluateAsync(script, token);
 						string kind = (string)state["state"];
 						string message = (string)state["message"];
+						if (state.ContainsKey("adapter") && kind != "redirected")
+						{
+							string adapter = (string)state["adapter"];
+							if (adapter != previousAdapter)
+							{
+								progress.Report("自动适配：" + (adapter == "huadian" ? "华电认证表单" : adapter == "enhanced" ? "图片按钮 / 内嵌表单" : "通用认证表单"));
+								previousAdapter = adapter;
+							}
+						}
 						progress.Report(message);
 						if (kind == "redirected")
 						{
@@ -124,7 +142,7 @@ namespace CampusNet
 							}
 							goto default;
 						default:
-							await Task.Delay(1500, token);
+							await Task.Delay(submitted ? 200 : 1500, token);
 							continue;
 						}
 						break;

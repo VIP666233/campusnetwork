@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -16,17 +16,7 @@ namespace CampusNet
 
 		private TextBox password;
 
-		private TextBox userSelector;
-
-		private TextBox passwordSelector;
-
-		private TextBox providerSelector;
-
-		private TextBox providerValue;
-
-		private TextBox loginSelector;
-
-		private TextBox suffix;
+		private Button diagnose;
 
 		private TextBox verificationAddress;
 
@@ -140,7 +130,7 @@ namespace CampusNet
 
 		private void Build()
 		{
-			Text = "校园网自动登录 v1.9.1（基于 v1.3）";
+			Text = "校园网自动登录 v1.10.0";
 			base.ClientSize = new Size(744, 700);
 			base.StartPosition = FormStartPosition.CenterScreen;
 			Size size2 = (MaximumSize = base.Size);
@@ -256,18 +246,16 @@ namespace CampusNet
 			verificationAddress = Field(value, "官网验证地址", 24, 18, 460);
 			verificationAddress.Text = "https://www.bilibili.com/";
 			LabelAt(value, "登录后用浏览器打开验证，网页加载成功后自动关闭。", 127, 49).ForeColor = Color.FromArgb(96, 110, 122);
-			LabelAt(value, "下方表单默认自动识别；识别有误时填写 CSS 选择器。", 24, 80).ForeColor = Color.FromArgb(96, 110, 122);
-			userSelector = Field(value, "账号输入框", 24, 110, 460);
-			passwordSelector = Field(value, "密码输入框", 24, 142, 460);
-			providerSelector = Field(value, "运营商控件", 24, 174, 460);
-			providerValue = Field(value, "运营商选项值", 24, 206, 460);
-			loginSelector = Field(value, "登录按钮", 24, 238, 460);
-			suffix = Field(value, "账号后缀", 24, 270, 460);
-			Label label = LabelAt(value, "示例：#username、input[name=\"DDDDD\"]、#ISP_select。", 24, 306);
-			label.ForeColor = Color.FromArgb(96, 110, 122);
-			int num = label.Top + label.Font.Height;
-			LabelAt(value, "选项值、账号后缀仅在学校明确要求时填写。", 24, num).ForeColor = label.ForeColor;
-			LabelAt(value, "QQ交流群：1131310647", 470, num).ForeColor = Color.FromArgb(45, 52, 60);
+			LabelAt(value, "错误检测", 24, 87).Font = new Font(Font, FontStyle.Bold);
+			LabelAt(value, "无法登录时，可保存检测报告发给作者，帮助适配学校页面。", 24, 115).ForeColor = Color.FromArgb(96, 110, 122);
+			diagnose = new Button { Text = "点击检测", Name = "diagnosePortal", Location = new Point(24, 146), Size = new Size(142, 32), UseVisualStyleBackColor = true };
+			value.Controls.Add(diagnose);
+			diagnose.Click += delegate {
+				try { using (var dialog = new PortalDiagnosticsForm(Settings.NormalizeUrl(address.Text))) dialog.ShowDialog(this); }
+				catch (Exception ex) { MessageBox.Show(this, ex.Message, "无法开始检测", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+			};
+			LabelAt(value, "检测不填写账号密码，也不会提交登录。", 24, 189).ForeColor = Color.FromArgb(96, 110, 122);
+			ProjectLinks.Add(value, 316);
 			state = new Label
 			{
 				Text = "准备就绪",
@@ -434,12 +422,6 @@ namespace CampusNet
 				startup.Checked = Settings.HasStartup();
 				showBrowser.Checked = settings.ShowBrowserOnStartup;
 				delay.Value = Math.Max(0, Math.Min(180, settings.StartupDelay));
-				userSelector.Text = settings.UsernameSelector;
-				passwordSelector.Text = settings.PasswordSelector;
-				providerSelector.Text = settings.ProviderSelector;
-				providerValue.Text = settings.ProviderValue;
-				loginSelector.Text = settings.LoginSelector;
-				suffix.Text = settings.AccountSuffix;
 			}
 			catch
 			{
@@ -450,7 +432,7 @@ namespace CampusNet
 
 		private string[] EditValues()
 		{
-			return new string[14]
+			return new string[8]
 			{
 				address.Text,
 				username.Text,
@@ -459,12 +441,6 @@ namespace CampusNet
 				startup.Checked.ToString(),
 				showBrowser.Checked.ToString(),
 				delay.Value.ToString(),
-				userSelector.Text,
-				passwordSelector.Text,
-				providerSelector.Text,
-				providerValue.Text,
-				loginSelector.Text,
-				suffix.Text,
 				verificationAddress.Text
 			};
 		}
@@ -511,12 +487,6 @@ namespace CampusNet
 			settings.Startup = startup.Checked;
 			settings.ShowBrowserOnStartup = showBrowser.Checked;
 			settings.StartupDelay = (int)delay.Value;
-			settings.UsernameSelector = userSelector.Text.Trim();
-			settings.PasswordSelector = passwordSelector.Text.Trim();
-			settings.ProviderSelector = providerSelector.Text.Trim();
-			settings.ProviderValue = providerValue.Text.Trim();
-			settings.LoginSelector = loginSelector.Text.Trim();
-			settings.AccountSuffix = suffix.Text;
 			return settings;
 		}
 

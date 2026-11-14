@@ -1,0 +1,29 @@
+<!doctype html><html><meta charset="utf-8"><body>
+<!-- Synthetic structure from the diagnostic records; no school page assets/data. -->
+<div id="logininfo_hk">
+  <span id="connectNetworkId" style="cursor:pointer">连接网络</span>
+  <div><input id="username_tip" name="username_tip" value="账号" class="input_tip"><div id="actualUser" style="display:none"><input id="username" name="username" class="input"></div></div>
+  <div><input id="pwd_tip" name="pwd_tip" value="密码" class="input_tip"><div id="actualPass" style="display:none"><input id="pwd" name="pwd" type="password" class="input"></div></div>
+  <div id="serviceRow" style="width:240px;height:40px;background:#eee"><div id="serviceCaption">校园网</div><div><span><input type="hidden" id="net_access_type" value="c"><input type="hidden" id="isNoOperatorPwd"><input type="hidden" id="isNoDomainName"></span></div></div>
+  <div id="services" style="display:none"><span>
+    <div id="bch_service_0" class="login_frame_hang" onclick="window.chooseService(this,'t')"><div>电信<input type="hidden" id="domainName0"></div></div>
+    <div id="bch_service_1" class="login_frame_hang" onclick="window.chooseService(this,'m')"><div>移动<input type="hidden" id="domainName1"></div></div>
+    <div id="bch_service_2" class="login_frame_hang" onclick="window.chooseService(this,'u')"><div>联通<input type="hidden" id="domainName2"></div></div>
+    <div id="bch_service_3" class="login_frame_hang" onclick="window.chooseService(this,'c')"><div>校园网<input type="hidden" id="domainName3"></div></div>
+  </span></div>
+  <div id="extra" style="display:none"><input id="operatorUserId"><input id="operatorPwd" type="password"></div>
+  <a id="jizhummNo" onclick="window.rememberClicks++"><div>记住密码</div></a>
+  <ol><li><a id="loginLink" onclick="window.submitCount++;window.sentUser=document.querySelector('#username').value;window.sentPass=document.querySelector('#pwd').value;return false;">
+    <div id="loginLink_div" style="width:240px;height:50px;cursor:pointer;background-image:linear-gradient(#3c7,#3c7)"></div>
+  </a></li></ol>
+</div>
+<iframe style="display:none"></iframe>
+<script>
+window.submitCount=0;window.rememberClicks=0;window.serviceClicks=0;
+username_tip.onfocus=function(){this.style.display='none';actualUser.style.display='';username.focus();};
+pwd_tip.onfocus=function(){this.style.display='none';actualPass.style.display='';pwd.focus();};
+username.onblur=function(){if(!this.value){actualUser.style.display='none';username_tip.style.display='';}};
+pwd.onblur=function(){if(!this.value){actualPass.style.display='none';pwd_tip.style.display='';}};
+serviceRow.addEventListener('click',function(e){if(e.isTrusted)services.style.display='';});
+window.chooseService=function(el,code){serviceCaption.textContent=el.innerText;net_access_type.value=code;services.style.display='none';window.serviceClicks++;};
+</script></body></html>
