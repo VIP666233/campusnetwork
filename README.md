@@ -40,15 +40,6 @@
 | 托盘驻留 | 关闭主窗口后留在通知区域，双击图标可重新打开。 |
 | 设置保存 | 修改设置后点击连接、关闭窗口或退出，会询问是否保存；密码按当前 Windows 用户加密保存。 |
 
-<details>
-<summary><strong>🖼 查看 v1.10.0 界面预览</strong></summary>
-
-高级设置保留验证地址、错误检测、项目链接和交流群。以下为使用默认配置生成的实际界面，不含真实账号。
-
-![v1.10.0 高级设置界面](docs/images/advanced-settings.png)
-
-</details>
-
 <a id="guide"></a>
 ## 🚀 从 0 开始使用
 
@@ -115,7 +106,7 @@
 
 1. 打开“高级设置”，点击 **“点击检测”**。
 2. 等认证页加载完整；如果有运营商下拉菜单，可以展开后点击“重新检测”。
-3. 保存检测报告，**只通过 QQ 交流群 `1131310647` 反馈问题**。
+3. 保存检测报告，**通过 QQ 交流群 `1131310647` 反馈问题**。
 
 检测只读取页面结构，不填写账号密码、不点击登录；报告不采集输入框内容、Cookie、浏览器存储或网址查询参数。附截图时请隐藏自己的账号等个人信息。
 
@@ -184,7 +175,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 - ⭐ **[GitHub 项目](https://github.com/VIP666233/campusnetwork)**：点个 Star，也欢迎分享给需要的同学。
 - 🪙 **[Bilibili 视频](https://www.bilibili.com/video/BV1tbnq66EeL/)**：欢迎投币、点赞支持。
-- 💬 **QQ 交流群：`1131310647`**：问题反馈的唯一渠道，也欢迎交流使用心得。
+- 💬 **QQ 交流群：`1131310647`**：反馈问题，也欢迎交流使用心得。
 
 ## ⭐ Star History
 
@@ -193,14 +184,6 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 [![VIP666233/campusnetwork Star History](https://api.star-history.com/svg?repos=VIP666233/campusnetwork&type=Date)](https://www.star-history.com/?repos=VIP666233%2Fcampusnetwork&type=date&legend=top-left)
 
 图表由 [Star History](https://www.star-history.com/) 生成，展示本仓库的 Star 变化。
-
-## ❤️ 感谢贡献者
-
-感谢每一位提交代码、完善文档和帮助项目成长的朋友。
-
-[![campusnetwork 贡献者](https://contrib.rocks/image?repo=VIP666233/campusnetwork)](https://github.com/VIP666233/campusnetwork/graphs/contributors)
-
-头像由 [contrib.rocks](https://contrib.rocks/) 根据 GitHub 贡献记录生成，点击可查看完整列表。
 
 ---
 
